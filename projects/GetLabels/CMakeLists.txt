@@ -1,0 +1,143 @@
+# ---[ Project.
+project (GetLabels
+  VERSION 0.1.0.0
+  DESCRIPTION ""
+  LANGUAGES CXX
+)
+
+# ---[ Modules.
+include (FetchContent)
+include (GNUInstallDirs)
+
+# ---[ Target.
+add_executable (${PROJECT_NAME})
+
+# ---[ Compile definitions.
+string (TIMESTAMP BUILD_TIMESTAMP)
+target_compile_definitions (${PROJECT_NAME}
+  PRIVATE
+    PROJECT_NAME="${PROJECT_NAME}"
+    PROJECT_DESCRIPTION="${PROJECT_DESCRIPTION}"
+    PROJECT_VERSION="${PROJECT_VERSION}"
+#    BUILD_TIMESTAMP="${BUILD_TIMESTAMP}"
+)
+
+# ---[ Dependencies.
+
+# ---[ Include directories.
+target_include_directories (${PROJECT_NAME}
+  PRIVATE
+
+)
+
+# ---[ Link libraries.
+target_link_libraries (${PROJECT_NAME}
+  PRIVATE
+    CONAN_PKG::nlohmann_json
+    $<$<PLATFORM_ID:Linux>:stdc++fs>
+)
+
+# ---[ Compile options.
+target_compile_options (${PROJECT_NAME}
+  PRIVATE
+    $<$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>:
+      -Wall
+      -Wextra
+      -Wpedantic
+      -pedantic-errors
+    >
+    $<$<AND:$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>,$<CONFIG:Release>>:
+      -ftree-vectorize
+      -march=native
+      -mfpmath=sse
+      -funroll-loops
+    >
+    $<$<AND:$<CXX_COMPILER_ID:GNU>,$<CONFIG:Release>>:
+      -fopt-info-loop-optimized
+      -ftree-loop-distribution
+      -ftree-vectorizer-verbose=3
+    >
+    $<$<CXX_COMPILER_ID:MSVC>:
+      /Wall
+      /EHsc
+      /MP
+      /Qpar
+      /Qpar-report:2
+      /Qvec-report:2
+    >
+    $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Debug>>:
+      /MDd
+    >
+    $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Release>>:
+      /Zi
+      /MD
+    >
+    ${OpenMP_CXX_FLAGS}
+)
+
+# ---[ Link options.
+target_compile_options (${PROJECT_NAME}
+  PRIVATE
+    $<$<AND:$<CXX_COMPILER_ID:MSVC>,$<CONFIG:Release>>:
+      /INCREMENTAL:NO
+      /DEBUG
+      /OPT:REF
+      /OPT:ICF
+    >
+)
+
+# ---[ Sources.
+set (SOURCE_FILES
+  "./src/main.cpp"
+)
+
+source_group (TREE "${CMAKE_CURRENT_SOURCE_DIR}"
+  FILES
+    ${SOURCE_FILES}
+)
+
+target_sources (${PROJECT_NAME}
+  PRIVATE
+    ${SOURCE_FILES}
+)
+
+# ---[ Target properties.
+set_target_properties (${PROJECT_NAME}
+  PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+    LINKER_LANGUAGE CXX
+    LINK_WHAT_YOU_USE ON
+    BUILD_RPATH_USE_ORIGIN ON
+    BUILD_WITH_INSTALL_RPATH ON
+    INSTALL_RPATH_USE_LINK_PATH ON
+    BUILD_RPATH "${CMAKE_INSTALL_LIBDIR}"
+    INSTALL_RPATH "${CMAKE_INSTALL_LIBDIR}"
+    POSITION_INDEPENDENT_CODE ON
+    DEBUG_POSTFIX "d"
+    COMPILE_PDB_NAME ${PROJECT_NAME}
+    COMPILE_PDB_OUTPUT_DIR "${CMAKE_BINARY_DIR}"
+    USE_FOLDERS ON
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+)
+
+# ---[ Install rules.
+include (InstallRequiredSystemLibraries)
+install (TARGETS ${PROJECT_NAME}
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+)

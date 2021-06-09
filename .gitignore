@@ -1,0 +1,53 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.so*
+*.dylib
+*.dylib*
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# MS
+.vs/*
+.vscode/*
+CMakeSettings.json
+
+# QtCreator
+CMakeLists.txt.user
+
+# Externals
+externals/*
+externals_v*.7z
+
+# Build directories
+build/*
+
+# Exclude from ignore
+!cmake/**
+!scripts/**
