@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
             labels.push_back(_label);
           } else
             it->count++;
+          break;
         }
       } catch (const json::exception& e) {
         cerr << "Parsing error: " << e.what();
@@ -52,7 +53,10 @@ int main(int argc, char* argv[]) {
       }
     }
   }
+  int count = 0;
   for (auto v : labels) {
     cout << v.name << " = " << v.count << endl;
+    count = count + v.count;
   }
-}
+  cout << "\nTotal: " << count << endl;
+}r
