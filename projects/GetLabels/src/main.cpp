@@ -59,4 +59,4 @@ int main(int argc, char* argv[]) {
     count = count + v.count;
   }
   cout << "\nTotal: " << count << endl;
-}r
+}
