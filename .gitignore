@@ -6,7 +6,6 @@
 *.lo
 *.o
 *.obj
-*.json
 
 # Precompiled Headers
 *.gch
@@ -52,3 +51,6 @@ build/*
 # Exclude from ignore
 !cmake/**
 !scripts/**
+
+# Other
+*.json
