@@ -12,6 +12,7 @@ namespace fs = std::filesystem;
 typedef struct Label {
   string name;
   int count;
+  bool isInc = false;
 };
 
 int main(int argc, char* argv[]) {
@@ -22,6 +23,8 @@ int main(int argc, char* argv[]) {
   string path = argv[1];
   vector<Label> labels;
   for (auto& p : fs::recursive_directory_iterator(path)) {
+    for (auto& v : labels)
+      v.isInc = true;
     if (p.path().extension() == ".json") {
       cout << p << endl;
       std::string source, content;
@@ -42,10 +45,12 @@ int main(int argc, char* argv[]) {
             Label _label = {};
             _label.name = name;
             _label.count = 1;
+            _label.isInc = false;
             labels.push_back(_label);
-          } else
+          } else if (it->isInc) {
             it->count++;
-          break;
+            it->isInc = false;
+          }
         }
       } catch (const json::exception& e) {
         cerr << "Parsing error: " << e.what();
@@ -55,7 +60,7 @@ int main(int argc, char* argv[]) {
   }
   int count = 0;
   for (auto v : labels) {
-    cout << v.name << " = " << v.count << endl;
+    cout << v.name << "=" << v.count << endl;
     count = count + v.count;
   }
   cout << "\nTotal: " << count << endl;
