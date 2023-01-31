@@ -1,0 +1,20 @@
+{
+  "cmake.buildDirectory": "${workspaceFolder}/build/${buildType}",
+  "cmake.preferredGenerators": [
+    "Visual Studio 16 2019",
+    "Ninja"
+  ],
+  "cmake.generator": "Ninja",
+  "cmake.configureArgs": [
+    "-G",
+    "Ninja"
+  ],
+  "cmake.configureSettings": {
+    "CMAKE_BUILD_TYPE": "${buildType}"
+  },
+  "cmake.parallelJobs": 4,
+  "cmake.installPrefix": "${workspaceFolder}/build/${buildType}/install",
+  "terminal.integrated.env.windows": {
+    "PATH": ""
+  }
+}

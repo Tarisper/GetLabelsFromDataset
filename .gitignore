@@ -33,11 +33,6 @@
 *.out
 *.app
 
-# MS
-.vs/*
-.vscode/*
-CMakeSettings.json
-
 # QtCreator
 CMakeLists.txt.user
 
@@ -51,6 +46,3 @@ build/*
 # Exclude from ignore
 !cmake/**
 !scripts/**
-
-# Other
-*.json

@@ -9,19 +9,26 @@ using namespace std;
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
-typedef struct Label {
+typedef struct {
   string name;
   int count;
   bool isInc = false;
-};
+} Label;
 
 int main(int argc, char* argv[]) {
   if (argc == 1) {
-    cerr << "The path to the directory with files is not specified" << endl;
-    return 0;
+    cerr << "The path to the directory with the files is not specified. Run "
+            "the program and specify the path in the first startup argument. "
+            "Example: GetLabels ../../../example/"
+         << endl;
+    return 1;
   }
   string path = argv[1];
   vector<Label> labels;
+  if (!fs::exists(path)) {
+    cerr << "There is no directory with this name: " << path << endl;
+    return 2;
+  }
   for (auto& p : fs::recursive_directory_iterator(path)) {
     for (auto& v : labels)
       v.isInc = true;
@@ -29,7 +36,7 @@ int main(int argc, char* argv[]) {
       cout << p << endl;
       std::string source, content;
       try {
-        std::ifstream in(p);
+        std::ifstream in(p.path());
         if (in.is_open()) {
           while (getline(in, source)) {
             content = content + source;
